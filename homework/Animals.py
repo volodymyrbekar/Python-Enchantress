@@ -26,7 +26,7 @@ class Falcon(Animals):
         print(f"{self.name} eat meat")
 
 
-class Shark(Falcon):
+class Shark(Animals):
 
     def swim_under_water(self):
         print(f"{self.type} can swim under water and that is fine")
@@ -44,7 +44,7 @@ class Bee(Falcon):
         print(f"Almost all {self.type} build develop living place")
 
 
-class Alligator(Shark, Falcon):
+class Alligator(Shark):
 
     def kill(self):
         print(f"Alligator is named {self.name} like kill other animals")
