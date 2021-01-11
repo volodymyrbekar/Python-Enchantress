@@ -56,40 +56,10 @@ class Person(ABC):
         raise NotImplementedError("You miss me")
 
 
-class House(ABC):
+class Home:
 
     def __init__(self, area, cost):
         self.area = area
-        self.cost = cost
-
-    @abstractmethod
-    def apply_discount(self):
-        raise NotImplementedError("You miss me!")
-
-
-class Human(Person):
-    def __init__(self, name, age, money, own_home):
-        super(Human, self).__init__(name, age, money, own_home)
-
-    def provide_information_about_yourself(self):
-        print(f"My name is {self.name}, I'm {self.age} years old, and I wanna buy a house ")
-
-    def earn_money(self):
-        while self.money < 500:
-            self.money += 100
-        print(f"Now I have {self.money} y.e. and i will buy a house,")
-        self.buy_a_house()
-
-    def buy_a_house(self):
-        if self.own_home is False and self.money >= 400:
-            self.own_home = True
-        print(f'I have a house - {self.own_home}')
-
-
-class Home(House):
-
-    def __init__(self, area, cost):
-        super(Home, self).__init__(area, cost)
         self.cost = cost
 
     def apply_discount(self):
@@ -98,12 +68,33 @@ class Home(House):
         print(f"This house with {self.area} square fit and cost - {self.cost}, don't have discount")
 
 
+class Human(Person):
+
+    def __init__(self, name, age, money, own_home, house_cost):
+        super(Human, self).__init__(name, age, money, own_home)
+        self.house_cost = house_cost
+
+    def provide_information_about_yourself(self):
+        print(f"My name is {self.name}, I'm {self.age} years old, and I wanna buy a house ")
+
+    def earn_money(self):
+        while self.money < self.house_cost:
+            self.money += 100
+        print(f"Now I have {self.money} y.e. and I will buy a house,")
+        self.buy_a_house()
+
+    def buy_a_house(self):
+        if not self.own_home and self.money >= self.house_cost:
+            self.own_home = True
+        print(f'I have a house - {self.own_home}')
+
+
 if __name__ == "__main__":
     realtor = Realtor(name="Nick", discount=200)
     realtor.give_discount()
     realtor.information_about_all_houses()
     realtor.steal_money()
     home = Home(area=50, cost=400)
-    human = Human(name="John", age=22, money=0, own_home=False)
+    human = Human(name="John", age=22, money=0, own_home=False, house_cost=500)
     home.apply_discount()
     human.earn_money()
