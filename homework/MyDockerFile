@@ -1,0 +1,8 @@
+FROM ubuntu:20.04
+RUN apt-get update && apt-get install -y python python-pip
+
+RUN pip install flask
+
+COPY  ../../../../Desktop/homework-5.py ./homework/
+
+ENTRYPOINT FLASK_APP=/homework/homework-5.py flask run --host=0.0.0.0 --port=8080
