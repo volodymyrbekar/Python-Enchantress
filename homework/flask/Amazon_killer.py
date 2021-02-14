@@ -56,12 +56,12 @@ def get_user(user_id):
 
 @amazon_killer.route('/users/<int:user_id>', methods=["PUT"])
 def update_user(user_id):
-    user_update = request.json
+    user = request.json
     response = {"status": "success"}
     try:
         user = USERS_DATABASE[user_id]
-        user["name"] = user_update["name"]
-        user["email"] = user_update["email"]
+        USERS_DATABASE[user_id]["name"] = user["name"]
+        USERS_DATABASE[user_id]["email"] = user["email"]
         USERS_DATABASE[user_id] = user
     except KeyError:
         raise NoSuchUser
@@ -115,7 +115,7 @@ def no_such_cart_handler(error):
     return {"error": "no such cart with id 1"}, 404
 
 
-@amazon_killer.route("/carts/1")
+@amazon_killer.route("/carts/<int:cart_id>", method=["GET"])
 def get_cart(cart_id):
     try:
         cart = CART_DATABASE[cart_id]
@@ -128,14 +128,14 @@ def get_cart(cart_id):
 no_such_cart_handler()
 
 
-@amazon_killer.route("/carts/1", method=["PUT"])
+@amazon_killer.route("/carts/<int: cart_id>", method=["PUT"])
 def update_cart(cart_id):
-    cart_update = request.json
+    cart = request.json
     response = {"status": "success"}
     try:
         cart = CART_DATABASE[cart_id]
-        cart["products"] = cart_update["products"]
-        cart["registration_time"] = cart_update["registration_time"]
+        CART_DATABASE[cart_id]["products"] = cart["products"]
+        CART_DATABASE[cart_id]["registration_time"] = cart["registration_time"]
     except KeyError:
         raise NoSuchCart(cart_id)
     else:
@@ -145,7 +145,7 @@ def update_cart(cart_id):
 no_such_cart_handler()
 
 
-@amazon_killer.route("/carts/1", method=["DELETE"])
+@amazon_killer.route("/carts/<int: cart_id>", method=["DELETE"])
 def delete_cart(cart_id):
     global cart_counter
     response = {"status": "success"}
