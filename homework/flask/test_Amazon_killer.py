@@ -1,5 +1,5 @@
 from freezegun import freeze_time
-from Amazon_killer import amazon_killer as app
+from homework.flask.Amazon_killer import amazon_killer as app
 import pytest
 
 
@@ -24,6 +24,7 @@ def test_create_user(store_app):
         "registration_timestamp": '2021-02-08T14:16:41'
     }
     user_id = response.json['user_id']
+
     response = store_app.get(f'/users/{user_id}')
 
     assert response.status_code == 200
@@ -34,6 +35,25 @@ def test_create_user(store_app):
         "registration_timestamp": '2021-02-08T14:16:41',
     }
 
+    response = store_app.put(
+        "/users/1",
+        json={
+            "name": "Volodymyr",
+            "email": "test@bekar.com"
+        }
+    )
+    assert response.status_code == 200
+    assert response.json == {
+        "name": "Volodymyr",
+        "email": "test@bekar.com",
+        "user_id": user_id,
+        "registration_timestamp": '2021-02-18T19:22:41'
+    }
+
+    response = store_app.delete(f"/users/{user_id}")
+    assert response.status_code == 200
+    assert response.json == {}
+
 
 def test_get_user_no_such_user(store_app):
     response = store_app.get('/users/2')
@@ -42,3 +62,7 @@ def test_get_user_no_such_user(store_app):
     assert response.json == {
         "error": "no such user with id 1"
     }
+
+
+def test_create_cart(store_app):
+    pass
