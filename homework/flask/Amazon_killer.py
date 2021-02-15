@@ -59,17 +59,13 @@ def update_user(user_id):
     user = request.json
     response = {"status": "success"}
     try:
-        user = USERS_DATABASE[user_id]
         USERS_DATABASE[user_id]["name"] = user["name"]
         USERS_DATABASE[user_id]["email"] = user["email"]
-        USERS_DATABASE[user_id] = user
     except KeyError:
         raise NoSuchUser
     else:
         return response, 200
 
-
-no_such_user_handler()
 
 # @amazon_killer.errorhandler(NoSuchUser)
 # def no_content_handler(error):
@@ -87,9 +83,6 @@ def delete_user(user_id):
         raise NoSuchUser(user_id)
     else:
         return response, 200
-
-
-no_such_user_handler()
 
 
 @amazon_killer.route("/carts", method=["POST"])
@@ -125,24 +118,17 @@ def get_cart(cart_id):
         return cart
 
 
-no_such_cart_handler()
-
-
 @amazon_killer.route("/carts/<int: cart_id>", method=["PUT"])
 def update_cart(cart_id):
     cart = request.json
     response = {"status": "success"}
     try:
-        cart = CART_DATABASE[cart_id]
         CART_DATABASE[cart_id]["products"] = cart["products"]
         CART_DATABASE[cart_id]["registration_time"] = cart["registration_time"]
     except KeyError:
         raise NoSuchCart(cart_id)
     else:
         return response, 200
-
-
-no_such_cart_handler()
 
 
 @amazon_killer.route("/carts/<int: cart_id>", method=["DELETE"])
@@ -156,9 +142,6 @@ def delete_cart(cart_id):
         raise NoSuchCart
     else:
         return response, 200
-
-
-no_such_cart_handler()
 
 
 if __name__ == '__main__':
